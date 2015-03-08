@@ -1,17 +1,27 @@
 #![feature(io, plugin)]
-#![plugin(regex_macros)]
 
 extern crate hyper;
-extern crate regex;
+extern crate "rustc-serialize" as rustc_serialize;
 
 use hyper::Client;
+use rustc_serialize::json;
 use std::io::Read;
+
+#[derive(RustcDecodable, RustcEncodable)]
+struct ApiResponse {
+    value: ApiResponseValue,
+}
+
+#[derive(RustcDecodable, RustcEncodable)]
+struct ApiResponseValue {
+    id: u64,
+    joke: String,
+    categories: Box<[String]>
+}
 
 /// [API Documentation](http://www.icndb.com/api/)
 pub fn main() {
-    let content_pattern = regex!("\"[A-Z][^\"]+\"");
     let mut client = Client::new();
-
     let mut res = match client.get("http://api.icndb.com/jokes/random").send() {
         Ok(res) => res,
         _ => {
@@ -26,14 +36,15 @@ pub fn main() {
         body
     };
 
-    let x = content_pattern
-        .captures(&body).unwrap()
-        .at(0).unwrap();
+    let api_response: ApiResponse = match json::decode(&body) {
+        Ok(response) => response,
+        Err(e) => panic!("{:?}", e)
+    };
 
-    println!("{}", &x[1..x.len() - 1]);
+    println!("{}", api_response.value.joke);
 }
 
-#![cfg(test)]
+#[cfg(test)]
 mod test {
 
 }
