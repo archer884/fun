@@ -7,6 +7,7 @@ extern crate regex;
 use hyper::Client;
 use std::io::Read;
 
+/// [API Documentation](http://www.icndb.com/api/)
 fn main() {
     let content_pattern = regex!("\"[A-Z][^\"]+\"");
     let mut client = Client::new();
