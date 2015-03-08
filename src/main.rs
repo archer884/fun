@@ -8,7 +8,7 @@ use hyper::Client;
 use std::io::Read;
 
 /// [API Documentation](http://www.icndb.com/api/)
-fn main() {
+pub fn main() {
     let content_pattern = regex!("\"[A-Z][^\"]+\"");
     let mut client = Client::new();
 
@@ -31,4 +31,9 @@ fn main() {
         .at(0).unwrap();
 
     println!("{}", &x[1..x.len() - 1]);
+}
+
+#![cfg(test)]
+mod test {
+
 }
