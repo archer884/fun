@@ -1,8 +1,8 @@
 language: rust
 os:
-        - linux
-        - osx
-        - windows
+    - linux
+    - osx
+    - windows
 script:
-        - cargo build -v
-        - cargo test -v
+    - cargo build -v
+    - cargo test -v
