@@ -1,6 +1,8 @@
 fun
 ===
 
+[![Build Status](https://travis-ci.org/archer884/fun.svg?branch=master)](https://travis-ci.org/archer884/fun)
+
 `fun` is a command line application whose sole purpose is to call the `icndb.com` API and print a random Chuck Norris Fact to the screen.
 
 ## Usage
