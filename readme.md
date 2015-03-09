@@ -9,7 +9,7 @@ fun
 
 ## Roadmap
 
-** Categories **
+#### Categories ####
 
 The ICNDB allows for calls for random jokes to either *include* or *exclude* certain categories of jokes entirely, but the application has no support whatever for this functionality. Many jokes don't seem to be categorized at all, so this is a lower priority, but--with everything else now working pretty well--it'll probably be the next item on the to-do list, such as it is.
 
