@@ -17,17 +17,16 @@ struct CommandOptions {
     //exclude: Box<[String]>
 }
 
-
 pub fn main() {
     let options = read_options();
 
     let response = match options {
         Command::Next(options) => icndb::next_with_names(
-            &options.first.unwrap_or("Chuck".to_string()), 
+            &options.first.unwrap_or("Chuck".to_string()),
             &options.last.unwrap_or("Norris".to_string())),
         Command::ById(id, options) => icndb::get_by_id_with_names(
-            id, 
-            &options.first.unwrap_or("Chuck".to_string()), 
+            id,
+            &options.first.unwrap_or("Chuck".to_string()),
             &options.last.unwrap_or("Norris".to_string())),
         Command::Invalid(desc) => {
             println!("{}", desc);
@@ -50,14 +49,14 @@ fn read_options() -> Command {
 
     match opts.parse(std::env::args()) {
         Ok(matches) => create_command(matches),
-        _ => Command::Invalid("Failed to read arguments.".to_string()) 
+        _ => Command::Invalid("Failed to read arguments.".to_string())
     }
 }
 
-/// Uses matches supplied by 
+/// Uses matches supplied by
 fn create_command(matches: Matches) -> Command {
     match matches.opt_str("id") {
-        
+
         // received ID option
         Some(value) => match value.parse() {
             Ok(id) => Command::ById(id, CommandOptions {
