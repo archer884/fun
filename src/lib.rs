@@ -1,7 +1,7 @@
-//! `icndb` provides a simple interface to `api.icndb.com` and is 
+//! `icndb` provides a simple interface to `api.icndb.com` and is
 //! designed especially for use with `fun`. Extracting this functionality
-//! into a library grants us greater flexibility with regard to our 
-//! base application and will permit a large number of improvements 
+//! into a library grants us greater flexibility with regard to our
+//! base application and will permit a large number of improvements
 //! in the future.
 //!
 //! ** Examples should go here. **
@@ -15,9 +15,9 @@ use hyper::Client;
 use rustc_serialize::json;
 use std::io::Read;
 
-/// Wraps an API response from the `api.icndb.com`. The authors' 
-/// intent appears to have been to provide an interface for both 
-/// failed and successful requests, but it has been difficult to 
+/// Wraps an API response from the `api.icndb.com`. The authors'
+/// intent appears to have been to provide an interface for both
+/// failed and successful requests, but it has been difficult to
 /// represent the full wrapper in Rust, and the wrapper adds no
 /// real value.
 #[derive(RustcDecodable, RustcEncodable)]
@@ -26,8 +26,8 @@ struct ApiResponseWrapper {
     value: ApiResponse,
 }
 
-/// Represents a single joke provided by the ICNDB. The `id` field 
-/// uniquely identifies this specific joke, which allows the user 
+/// Represents a single joke provided by the ICNDB. The `id` field
+/// uniquely identifies this specific joke, which allows the user
 /// to get this joke again at a later time if he or she so desires.
 #[derive(RustcDecodable, RustcEncodable)]
 pub struct ApiResponse {
@@ -43,7 +43,7 @@ pub fn next() -> Option<ApiResponse> {
 }
 
 /// Returns an option value containing a random joke from the API
-/// using the names supplied to the function instead of the default 
+/// using the names supplied to the function instead of the default
 /// name (Chuck Norris) or, failing that, None.
 pub fn next_with_names(first: &str, last: &str) -> Option<ApiResponse> {
     unwrap_response(execute_request(&format!("http://api.icndb.com/jokes/random?firstName={}&lastName={}", first, last)))
@@ -56,7 +56,7 @@ pub fn get_by_id(id: u64) -> Option<ApiResponse> {
 }
 
 /// Returns an option value containing a specified joke from the API
-/// using the names supplied to the function instead of the default 
+/// using the names supplied to the function instead of the default
 /// name (Chuck Norris) or, failing that, None.
 pub fn get_by_id_with_names(id: u64, first: &str, last: &str) -> Option<ApiResponse> {
     unwrap_response(
@@ -84,12 +84,12 @@ fn unwrap_response(response: Option<String>) -> Option<ApiResponse> {
 
 /// Unescape HTML entities found in joke contents.
 ///
-/// The ICNDB represents some values as HTML entities in the json 
-/// packets returned to the caller and rustc_deserialize does not 
+/// The ICNDB represents some values as HTML entities in the json
+/// packets returned to the caller and rustc_deserialize does not
 /// unescape these entities upon deserializing the json packet.
 /// This function deals with that by taking the (potentially) escaped
 /// values and unescaping any HTML entities contained therein before
-/// returning a new ApiResponse struct containing the unescaped 
+/// returning a new ApiResponse struct containing the unescaped
 /// values.
 ///
 /// ** Entities handled include: **
@@ -120,30 +120,5 @@ fn execute_request(request: &str) -> Option<String> {
     match response.read_to_string(&mut content) {
        Ok(()) => Some(content),
         _ => None
-    }
-}
-
-#[cfg(test)]
-mod icndb_test {
-    use super::*;
-
-    #[test]
-    fn next_works() {
-        assert!(next().is_some());
-    }
-
-    #[test]
-    fn next_with_names_works() {
-        assert!(next_with_names("John", "Archer").is_some());
-    }
-
-    #[test]
-    fn get_by_id_works() {
-        assert!(get_by_id(13).is_some());
-    }
-
-    #[test]
-    fn get_by_id_with_names_works() {
-        assert!(get_by_id_with_names(13, "John", "Archer").is_some());
     }
 }
