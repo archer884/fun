@@ -4,7 +4,21 @@
 //! base application and will permit a large number of improvements
 //! in the future.
 //!
-//! ** Examples should go here. **
+//! ## Example
+//!
+//! The code below calls the API to get a random joke with the custom
+//! name "Maximus Hardcorion", because why would you not?
+//!
+//! ```
+//! extern crate icndb;
+//!
+//! let response = icndb::next_with_names("Maximus", "Hardcorion").unwrap();
+//!
+//! assert!(response.joke.contains("Maximus Hardcorion"));
+//! ```
+//!
+//! The big thing to keep in mind, here, is that Maximus Hardcorion is
+//! Chuck Norris' Latin name.
 
 #![feature(box_syntax, io, plugin)]
 
